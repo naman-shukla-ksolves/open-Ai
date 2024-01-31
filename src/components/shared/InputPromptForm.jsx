@@ -115,9 +115,7 @@ const InputPromptForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (generationMode === "text") {
-      // if prompt is not empty handle text generation request
       !isInputPropmtEmpty(textInputField, setError) &&
-        // Handling api call and dispatching state changes [error and prompt state]
         handleTextGenerationRequest(
           generationMode,
           dispatch,
@@ -127,9 +125,7 @@ const InputPromptForm = () => {
           setError
         );
     } else {
-      // if prompt is not empty handle image generation request
       !isInputPropmtEmpty(imageInputField, setError) &&
-        // Handling api call and dispatching state changes [error and prompt state]
         handleImageGenerationRequest(
           generationMode,
           dispatch,

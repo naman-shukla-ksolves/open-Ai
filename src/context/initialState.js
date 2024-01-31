@@ -14,7 +14,7 @@ const initialState = {
     loading: false,
     promptText: "",
     text: "",
-    maxToken: 200,
+    maxToken: 1000,
     temperature: 0.5,
     topP: 1.0,
     frequencyPenalty: 0.0,
