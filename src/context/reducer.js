@@ -5,11 +5,7 @@ import {
   SET_GENERATED_TEXT,
   SET_GENERATION_MODE,
   SET_HEIGHT,
-  SET_IMAGE_LOADING,
-  SET_IMAGE_PROMPT,
-  SET_IMAGE_SRCS,
   SET_MAX_TOKEN,
-  SET_NUMBER_OF_IMAGES,
   SET_PRESENCE_PENALTY,
   SET_STEPS,
   SET_TEMPERATURE,
@@ -103,23 +99,6 @@ export default (state, action) => {
           presencePenalty: action.payload,
         },
       };
-    case SET_IMAGE_LOADING:
-      return {
-        ...state,
-        imageViewState: {
-          ...state.imageViewState,
-          loading: action.payload,
-        },
-      };
-
-    case SET_IMAGE_PROMPT:
-      return {
-        ...state,
-        imageViewState: {
-          ...state.imageViewState,
-          promptText: action.payload,
-        },
-      };
 
     case SET_WIDTH:
       return {
@@ -154,24 +133,6 @@ export default (state, action) => {
         imageViewState: {
           ...state.imageViewState,
           cfgScale: action.payload,
-        },
-      };
-
-    case SET_NUMBER_OF_IMAGES:
-      return {
-        ...state,
-        imageViewState: {
-          ...state.imageViewState,
-          numberOfImages: action.payload,
-        },
-      };
-
-    case SET_IMAGE_SRCS:
-      return {
-        ...state,
-        imageViewState: {
-          ...state.imageViewState,
-          imageSrcs: action.payload,
         },
       };
     default:

@@ -3,9 +3,6 @@ import getGeneratedContent from "../../api/getGeneratedContent";
 import AppContext from "../../context/AppContext";
 import {
   SET_GENERATED_TEXT,
-  SET_IMAGE_LOADING,
-  SET_IMAGE_PROMPT,
-  SET_IMAGE_SRCS,
   SET_TEXT_LOADING,
   SET_TEXT_PROMPT,
 } from "../../context/action.types";
@@ -51,45 +48,7 @@ async function handleTextGenerationRequest(
     });
 }
 
-async function handleImageGenerationRequest(
-  mode,
-  handler,
-  contentState,
-  currentPromptState,
-  setCurrentPromptState,
-  setError
-) {
-  dispatchHandler(handler, SET_IMAGE_LOADING, true); // set image loading to true
-  dispatchHandler(handler, SET_IMAGE_PROMPT, currentPromptState); // set input prompt to user input
-  let data;
-  toastTooltip(
-    "AI engine is processing your prompt, Please Wait....",
-    "info",
-    5000
-  );
-  const bodyParams = {
-    prompt: currentPromptState,
-    width: parseFloat(contentState.width),
-    height: parseFloat(contentState.height),
-    cfg_scale: parseFloat(contentState.cfgScale),
-    samples: parseFloat(contentState.numberOfImages),
-  };
-  await getGeneratedContent(mode, bodyParams)
-    .then((res) => {
-      data = res;
-      dispatchHandler(handler, SET_IMAGE_LOADING, false);
-      dispatchHandler(handler, SET_IMAGE_SRCS, JSON.parse(data['data']).imageUrls);
-    })
-    .catch(async (err) => {
-      toastTooltip(err.message, "error");
-      dispatchHandler(handler, SET_IMAGE_SRCS, []);
-      dispatchHandler(handler, SET_IMAGE_LOADING, false);
-    })
-    .finally(() => {
-      setCurrentPromptState("");
-      setError(false);
-    });
-}
+
 
 function isInputPropmtEmpty(currentPromptState, promptErrorHandler) {
   currentPromptState.trim() === "" && promptErrorHandler(true);
@@ -98,17 +57,15 @@ function isInputPropmtEmpty(currentPromptState, promptErrorHandler) {
 
 const InputPromptForm = () => {
   const [textInputField, setTextInputField] = useState("");
-  const [imageInputField, setImageInputField] = useState("");
   const [error, setError] = useState(false);
   const { state, dispatch } = useContext(AppContext);
-  const { generationMode, textViewState, imageViewState } = state;
-  const { loading: imgLoading } = imageViewState;
+  const { generationMode, textViewState } = state;
   const { loading: textLoading } = textViewState;
 
   const handleChange = (e) => {
-    generationMode === "text"
-      ? setTextInputField(e.target.value)
-      : setImageInputField(e.target.value);
+    if (generationMode === "text") {
+      setTextInputField(e.target.value);
+    }
     setError(false);
   };
 
@@ -124,36 +81,19 @@ const InputPromptForm = () => {
           setTextInputField,
           setError
         );
-    } else {
-      !isInputPropmtEmpty(imageInputField, setError) &&
-        handleImageGenerationRequest(
-          generationMode,
-          dispatch,
-          imageViewState,
-          imageInputField,
-          setImageInputField,
-          setError
-        );
-    }
+    } 
   };
 
   return (
     <form className="row gy-3" onSubmit={handleSubmit}>
-      {generationMode === "text" ? (
-        <InputPrompt
-          value={textInputField}
-          handler={handleChange}
-          isLoading={textLoading}
-          error={error}
-        />
-      ) : (
-        <InputPrompt
-          value={imageInputField}
-          handler={handleChange}
-          isLoading={imgLoading}
-          error={error}
-        />
-      )}
+     {generationMode === "text" && (
+  <InputPrompt
+    value={textInputField}
+    handler={handleChange}
+    isLoading={textLoading}
+    error={error}
+  />
+)}
       {error && (
         <span className="text-danger ms-2 fw-medium">
           Seacrh prompt can not be empty!
