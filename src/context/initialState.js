@@ -1,15 +1,6 @@
 const initialState = {
   isCaptchaValidated: false,
-  generationMode: localStorage.getItem("mode") || "image",
-  imageViewState: {
-    loading: false,
-    promptText: "",
-    imageSrcs: [],
-    width: 512,
-    height: 512,
-    cfgScale: 7.0,
-    numberOfImages: 1,
-  },
+  generationMode: localStorage.getItem("mode") || "text",
   textViewState: {
     loading: false,
     promptText: "",

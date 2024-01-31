@@ -10,7 +10,6 @@ import dispatchHandler from "../../context/dispatchHandler";
 import { toastTooltip } from "../../utils/toastTooltip";
 import InputPrompt from "./InputPrompt";
 
-
 async function handleTextGenerationRequest(
   mode,
   handler,
@@ -48,8 +47,6 @@ async function handleTextGenerationRequest(
     });
 }
 
-
-
 function isInputPropmtEmpty(currentPromptState, promptErrorHandler) {
   currentPromptState.trim() === "" && promptErrorHandler(true);
   return currentPromptState.trim() === "" ? true : false;
@@ -68,7 +65,6 @@ const InputPromptForm = () => {
     }
     setError(false);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (generationMode === "text") {
@@ -81,19 +77,19 @@ const InputPromptForm = () => {
           setTextInputField,
           setError
         );
-    } 
+    }
   };
 
   return (
     <form className="row gy-3" onSubmit={handleSubmit}>
-     {generationMode === "text" && (
-  <InputPrompt
-    value={textInputField}
-    handler={handleChange}
-    isLoading={textLoading}
-    error={error}
-  />
-)}
+      {generationMode === "text" && (
+        <InputPrompt
+          value={textInputField}
+          handler={handleChange}
+          isLoading={textLoading}
+          error={error}
+        />
+      )}
       {error && (
         <span className="text-danger ms-2 fw-medium">
           Seacrh prompt can not be empty!
