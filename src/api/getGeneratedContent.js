@@ -1,5 +1,5 @@
 async function getGeneratedContent(mode, paramObj) {
-  const query = mode === "text" ? "text/generate-text" : "image/generate-image";
+  const query = mode === "text" ? "text/generate-text" : query;
   let data;
   const res = await fetch(`${import.meta.env.VITE_BASE_URL}/${query}`, {
     method: "POST",
